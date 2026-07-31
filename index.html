@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevDelivery | Portfólio Front-end</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#2563EB', accent: '#F59E0B', light: '#F3F4F6', dark: '#1F2937' },
+                    fontFamily: { heading: ['"Bebas Neue"', 'sans-serif'], body: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #E5E7EB; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #9CA3AF; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4B5563; }
+    </style>
+</head>
+<body class="font-body bg-light text-dark" id="inicio">
+
+    <!-- Navbar -->
+    <nav class="bg-white text-dark py-3 px-6 shadow-md relative z-20 sticky top-0">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#inicio" class="flex items-center gap-3 cursor-pointer">
+                <div class="bg-primary text-white rounded-lg w-10 h-10 flex items-center justify-center font-bold text-xl">&lt;/&gt;</div>
+                <div>
+                    <h1 class="font-heading text-2xl tracking-wide leading-none text-primary">DEVDELIVERY</h1>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Projeto de Portfólio</span>
+                </div>
+            </a>
+            <div class="flex gap-4 items-center">
+                <button onclick="abrirCarrinho()" class="flex items-center gap-2 hover:text-primary font-bold transition transform hover:scale-105 bg-gray-100 px-5 py-2 rounded-full shadow-sm border border-gray-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span id="contador-carrinho" class="text-primary">0</span> itens
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-dark text-white pt-12 pb-20 px-6 relative">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
+            <div class="md:w-1/2 z-10 text-center md:text-left">
+                <h2 class="font-heading text-6xl md:text-8xl leading-[0.85] mb-6 text-accent">
+                    TEMPLATE DE<br>DELIVERY.
+                </h2>
+                <p class="text-lg mb-8 max-w-md opacity-90 mx-auto md:mx-0 text-gray-300">
+                    Demonstração técnica de manipulação de DOM, lógica de checkout, filtros dinâmicos e persistência de dados via LocalStorage.
+                </p>
+                <a href="#cardapio-section" class="inline-block bg-primary text-white font-bold text-lg px-8 py-3 rounded-full hover:bg-blue-700 transition shadow-lg">
+                    Explorar Sistema
+                </a>
+            </div>
+            <div class="md:w-1/2 relative z-10 flex justify-center">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                     alt="Projeto Ilustração" 
+                     class="w-[110%] max-w-lg drop-shadow-2xl rounded-3xl border-4 border-gray-700 hidden md:block">
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Categorias & Grid -->
+    <main id="cardapio-section" class="pt-12 pb-24 px-4 sm:px-6 min-h-screen max-w-6xl mx-auto">
+        <div class="mb-10 w-full overflow-x-auto pb-4 custom-scrollbar">
+            <div id="container-categorias" class="flex gap-3 w-max px-2"></div>
+        </div>
+        
+        <div id="grid-produtos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white text-dark py-10 text-center border-t border-gray-200">
+        <div class="max-w-4xl mx-auto px-6">
+            <h4 class="font-heading text-3xl mb-2 cursor-pointer hover:text-primary transition inline-block" onclick="abrirAdmin()">
+                ÁREA ADMINISTRATIVA ⚙️
+            </h4>
+            <p class="mb-1 text-sm text-gray-500">Clique no título acima para testar o Painel de Controle.</p>
+            <p class="mb-4 text-xs font-bold text-primary">Senha de teste: admin123</p>
+            <p class="mt-8 text-xs text-gray-400">Desenvolvido como demonstração técnica (MVP).</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Customização do Produto -->
+    <div id="modal-produto" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex justify-center items-end md:items-center transition-opacity">
+        <div class="bg-white w-full md:w-[500px] max-h-[90vh] md:max-h-[85vh] rounded-t-3xl md:rounded-3xl flex flex-col overflow-hidden shadow-2xl">
+            
+            <div class="relative h-48 bg-gray-200 flex-shrink-0 border-b-4 border-primary">
+                <img id="modal-img" src="" alt="Produto" class="w-full h-full object-cover">
+                <button onclick="fecharModal()" class="absolute top-4 right-4 bg-white text-dark p-2 rounded-full shadow hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-grow bg-gray-50">
+                <h2 id="modal-nome" class="font-heading text-3xl text-primary mb-1">Nome do Produto</h2>
+                <p id="modal-desc" class="text-sm text-gray-500 mb-6">Descrição</p>
+
+                <div id="modal-opcoes-container" class="space-y-6"></div>
+
+                <div class="mt-6">
+                    <h3 class="font-bold text-dark mb-2">Alguma observação?</h3>
+                    <textarea id="modal-obs" rows="2" placeholder="Ex: Sem cebola..." class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"></textarea>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-gray-200 flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                        <button onclick="alterarQuantidade(-1)" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-dark font-bold">-</button>
+                        <span id="modal-qtd" class="px-3 py-1 font-bold text-sm min-w-[2rem] text-center">1</span>
+                        <button onclick="alterarQuantidade(1)" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-dark font-bold">+</button>
+                    </div>
+                </div>
+                <button onclick="adicionarAoCarrinhoViaModal()" class="bg-primary text-white font-bold px-6 py-3 rounded-full hover:bg-blue-700 transition shadow-md w-1/2 flex justify-between items-center">
+                    <span>Adicionar</span>
+                    <span id="modal-preco-total">R$ 0,00</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrinho Lateral (Checkout) -->
+    <div id="sidebar-carrinho" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="fecharCarrinho()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl p-6 flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold font-heading text-primary">Resumo do Pedido</h2>
+                <button onclick="fecharCarrinho()" class="text-gray-500 hover:text-dark">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div id="lista-carrinho" class="flex-grow overflow-y-auto space-y-4 pr-2 custom-scrollbar"></div>
+            
+            <div class="border-t border-gray-200 pt-4 space-y-3 mt-4">
+                <select id="tipo-entrega" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary text-sm">
+                    <option value="Entrega">Delivery (Simulação)</option>
+                    <option value="Retirada">Retirada no Local</option>
+                </select>
+                <input type="text" id="endereco" placeholder="Endereço Completo" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary text-sm">
+                <select id="pagamento" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary text-sm">
+                    <option value="Cartão">Cartão de Crédito/Débito</option>
+                    <option value="PIX">PIX</option>
+                </select>
+                <button onclick="confirmarPedido()" class="w-full bg-dark text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition flex justify-center items-center gap-2">
+                    Simular Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel Administrativo -->
+    <div id="admin-panel" class="fixed inset-0 bg-gray-100 z-[60] hidden flex flex-col">
+        <div class="bg-dark text-white py-4 px-6 flex justify-between items-center shadow-md">
+            <h2 class="font-heading text-2xl">Console de Administração</h2>
+            <button onclick="fecharAdmin()" class="bg-red-600 px-4 py-1 rounded font-bold hover:bg-red-700 text-sm">Encerrar Sessão</button>
+        </div>
+        
+        <div class="flex-grow p-6 overflow-y-auto max-w-4xl mx-auto w-full">
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <div class="mb-4 border-b pb-2">
+                    <h3 class="font-bold text-lg">Gerenciador de Estoque (LocalStorage)</h3>
+                    <p class="text-xs text-gray-500">Altere preços ou ative/desative produtos em tempo real.</p>
+                </div>
+                <div id="lista-admin" class="space-y-3">
+                    <!-- Itens editáveis via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        // CONSTANTES DE CUSTOMIZAÇÃO
+        const basesCustomizacao = {
+            opcoesGerais: [
+                { idGrupo: "molho", titulo: "Deseja sachê de molho?", subtitulo: "Escolha 1 Opção.", tipo: "radio", obrigatorio: true, opcoes: [ { nome: "Ketchup e Maionese", precoExtra: 0 }, { nome: "Não desejo sachê", precoExtra: 0 } ] }
+            ],
+            adicionaisBurger: [
+                { idGrupo: "adicionais", titulo: "Adicionais Premium", subtitulo: "Turbine seu pedido.", tipo: "checkbox", maximo: 3, obrigatorio: false, opcoes: [ { nome: "Bacon", precoExtra: 5.00 }, { nome: "Queijo Extra", precoExtra: 4.00 }, { nome: "Cebola Caramelizada", precoExtra: 3.00 } ] }
+            ]
+        };
+
+        // BANCO DE DADOS REDUZIDO (Portfólio)
+        const dbCardapio = [
+            { id: 1, categoria: "Burgers", nome: "Classic Cheese", preco: 25.00, desc: "Blend bovino 150g, queijo prato e maionese da casa.", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80", customizacoes: [...basesCustomizacao.adicionaisBurger, ...basesCustomizacao.opcoesGerais] },
+            { id: 2, categoria: "Burgers", nome: "Bacon Smash", preco: 32.00, desc: "Duplo smash burger com fatias de bacon crocante.", img: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80", customizacoes: [...basesCustomizacao.adicionaisBurger, ...basesCustomizacao.opcoesGerais] },
+            { id: 3, categoria: "Burgers", nome: "Veggie Premium", preco: 28.00, desc: "Hambúrguer de grão de bico com rúcula e tomate seco.", img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&q=80", customizacoes: basesCustomizacao.opcoesGerais },
+            { id: 4, categoria: "Pizzas", nome: "Pizza Margherita", preco: 45.00, desc: "Massa de fermentação natural, molho de tomate e manjericão.", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80", customizacoes: [] },
+            { id: 5, categoria: "Pizzas", nome: "Pizza Pepperoni", preco: 52.00, desc: "Fatias generosas de pepperoni com queijo derretido.", img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80", customizacoes: [] },
+            { id: 6, categoria: "Acompanhamentos", nome: "Fritas Rústicas", preco: 18.00, desc: "Batatas cortadas à mão com páprica.", img: "https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80", customizacoes: basesCustomizacao.opcoesGerais },
+            { id: 7, categoria: "Acompanhamentos", nome: "Onion Rings", preco: 22.00, desc: "Anéis de cebola empanados e crocantes.", img: "https://images.unsplash.com/photo-1639024470487-17eb93108ff4?w=400&q=80", customizacoes: basesCustomizacao.opcoesGerais },
+            { id: 8, categoria: "Bebidas", nome: "Refrigerante Cola Lata", preco: 6.00, desc: "350ml bem gelado.", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&q=80", customizacoes: [] },
+            { id: 9, categoria: "Bebidas", nome: "Suco Natural Laranja", preco: 9.00, desc: "Feito na hora, sem açúcar adicionado.", img: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&q=80", customizacoes: [] },
+            { id: 10, categoria: "Sobremesas", nome: "Brownie com Sorvete", preco: 16.00, desc: "Brownie quente com bola de sorvete de baunilha.", img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&q=80", customizacoes: [] },
+            { id: 11, categoria: "Sobremesas", nome: "Cheesecake de Frutas Vermelhas", preco: 19.00, desc: "Clássica sobremesa nova-iorquina.", img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&q=80", customizacoes: [] }
+        ];
+
+        // 1. PRIMEIRO: VARIÁVEIS DO SISTEMA DE COMPRAS
+        let carrinho = [];
+        let categoriaAtiva = "Todos";
+        let produtoNoModal = null;
+        let quantidadeModal = 1;
+
+        // 2. SEGUNDO: SISTEMA ADMINISTRATIVO (LOCAL STORAGE)
+        let cardapioAtual = JSON.parse(localStorage.getItem('db_devdelivery'));
+        if (!cardapioAtual || cardapioAtual.length !== dbCardapio.length) {
+            cardapioAtual = dbCardapio.map(item => ({...item, ativo: true})); 
+            salvarBanco();
+        }
+
+        function salvarBanco() {
+            localStorage.setItem('db_devdelivery', JSON.stringify(cardapioAtual));
+            renderizarProdutos();
+        }
+
+        function abrirAdmin() {
+            const senha = prompt("Console Admin. Insira a senha (Dica: admin123):");
+            if (senha === "admin123") {
+                document.getElementById('admin-panel').classList.remove('hidden');
+                renderizarAdmin();
+            } else if (senha !== null) {
+                alert("Acesso Negado: Senha incorreta.");
+            }
+        }
+
+        function fecharAdmin() {
+            document.getElementById('admin-panel').classList.add('hidden');
+        }
+
+        function renderizarAdmin() {
+            const lista = document.getElementById('lista-admin');
+            lista.innerHTML = cardapioAtual.map((item, index) => `
+                <div class="flex flex-col md:flex-row justify-between items-center bg-gray-50 p-3 rounded border">
+                    <div class="flex items-center gap-3 w-full md:w-1/2 mb-2 md:mb-0">
+                        <input type="checkbox" ${item.ativo ? 'checked' : ''} onchange="alternarDisponibilidade(${index})" class="w-5 h-5 text-primary rounded cursor-pointer">
+                        <span class="font-bold text-sm ${!item.ativo ? 'text-gray-400 line-through' : ''}">${item.nome}</span>
+                        <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-600">${item.categoria}</span>
+                    </div>
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <span class="text-sm font-bold text-gray-500">R$</span>
+                        <input type="number" step="0.50" value="${item.preco}" onchange="atualizarPreco(${index}, this.value)" class="border border-gray-300 p-1 rounded w-24 text-right focus:outline-none focus:ring-1 focus:ring-primary">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function atualizarPreco(index, novoPreco) {
+            cardapioAtual[index].preco = parseFloat(novoPreco);
+            salvarBanco();
+        }
+
+        function alternarDisponibilidade(index) {
+            cardapioAtual[index].ativo = !cardapioAtual[index].ativo;
+            salvarBanco();
+        }
+
+        // --- SISTEMA DE RENDERIZAÇÃO E MODAL ---
+        function renderizarProdutos() {
+            const grid = document.getElementById('grid-produtos');
+            grid.innerHTML = '';
+            
+            const categorias = ["Todos", ...new Set(cardapioAtual.map(i => i.categoria))];
+            
+            document.getElementById('container-categorias').innerHTML = categorias.map(cat => 
+                `<button onclick="categoriaAtiva='${cat}'; renderizarProdutos()" class="px-5 py-2 rounded-lg font-bold text-sm transition flex-shrink-0 whitespace-nowrap ${cat === categoriaAtiva ? 'bg-primary text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}">${cat}</button>`
+            ).join('');
+
+            const produtos = cardapioAtual.filter(i => (categoriaAtiva === "Todos" || i.categoria === categoriaAtiva) && i.ativo === true);
+
+            grid.innerHTML = produtos.map(prod => `
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition flex flex-col h-full cursor-pointer transform hover:-translate-y-1" onclick="abrirModal(${prod.id})">
+                    <div class="flex gap-4 h-full">
+                        <img src="${prod.img}" class="w-24 h-24 object-cover rounded-xl border border-gray-100 flex-shrink-0">
+                        <div class="flex flex-col flex-grow justify-between">
+                            <div>
+                                <h4 class="font-bold text-lg text-dark leading-tight">${prod.nome}</h4>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">${prod.desc}</p>
+                            </div>
+                            <div class="flex justify-between items-end mt-2">
+                                <span class="font-bold text-primary text-lg">R$ ${prod.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-gray-100 text-dark px-3 py-1.5 rounded-lg font-bold text-xs hover:bg-gray-200 transition">+ Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function abrirModal(idProduto) {
+            produtoNoModal = cardapioAtual.find(p => p.id === idProduto);
+            quantidadeModal = 1;
+
+            document.getElementById('modal-img').src = produtoNoModal.img;
+            document.getElementById('modal-nome').innerText = produtoNoModal.nome;
+            document.getElementById('modal-desc').innerText = produtoNoModal.desc;
+            document.getElementById('modal-obs').value = "";
+            
+            const container = document.getElementById('modal-opcoes-container');
+            container.innerHTML = '';
+
+            if (produtoNoModal.customizacoes && produtoNoModal.customizacoes.length > 0) {
+                produtoNoModal.customizacoes.forEach(grupo => {
+                    const tagObrigatorio = grupo.obrigatorio ? `<span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-1 rounded">Obrigatório</span>` : '';
+                    
+                    let htmlOpcoes = grupo.opcoes.map((opcao) => `
+                        <label class="flex items-center justify-between p-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50">
+                            <div class="flex items-center gap-3">
+                                <input type="${grupo.tipo}" name="${grupo.idGrupo}" value="${opcao.nome}" data-preco="${opcao.precoExtra}" onchange="atualizarPrecoModal()" class="w-5 h-5 text-primary focus:ring-primary border-gray-300 rounded${grupo.tipo === 'radio' ? '-full' : ''}">
+                                <span class="text-sm text-gray-700">${opcao.nome}</span>
+                            </div>
+                            ${opcao.precoExtra > 0 ? `<span class="text-sm font-semibold text-gray-500">+ R$ ${opcao.precoExtra.toFixed(2).replace('.', ',')}</span>` : ''}
+                        </label>
+                    `).join('');
+
+                    container.innerHTML += `
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-bold text-dark text-sm">${grupo.titulo}</h3>
+                                    <p class="text-xs text-gray-500">${grupo.subtitulo}</p>
+                                </div>
+                                ${tagObrigatorio}
+                            </div>
+                            <div class="flex flex-col">${htmlOpcoes}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            atualizarPrecoModal();
+            document.getElementById('modal-produto').classList.remove('hidden');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-produto').classList.add('hidden');
+            produtoNoModal = null;
+        }
+
+        function alterarQuantidade(delta) {
+            if (quantidadeModal + delta >= 1) {
+                quantidadeModal += delta;
+                atualizarPrecoModal();
+            }
+        }
+
+        function atualizarPrecoModal() {
+            let precoAdicionais = 0;
+            const inputsChecados = document.querySelectorAll('#modal-opcoes-container input:checked');
+            
+            inputsChecados.forEach(input => {
+                precoAdicionais += parseFloat(input.dataset.preco || 0);
+            });
+
+            const total = (produtoNoModal.preco + precoAdicionais) * quantidadeModal;
+            document.getElementById('modal-qtd').innerText = quantidadeModal;
+            document.getElementById('modal-preco-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        function adicionarAoCarrinhoViaModal() {
+            let selecoes = [];
+            let precoAdicionais = 0;
+            let validacaoPassou = true;
+
+            if (produtoNoModal.customizacoes) {
+                produtoNoModal.customizacoes.forEach(grupo => {
+                    const inputs = document.querySelectorAll(`input[name="${grupo.idGrupo}"]:checked`);
+                    
+                    if (grupo.tipo === 'checkbox' && grupo.maximo && inputs.length > grupo.maximo) {
+                        alert(`Você pode escolher no máximo ${grupo.maximo} opções em: ${grupo.titulo}`);
+                        validacaoPassou = false;
+                    }
+
+                    if (grupo.obrigatorio && inputs.length === 0) {
+                        alert(`Validação: Selecione uma opção em '${grupo.titulo}'`);
+                        validacaoPassou = false;
+                    }
+                    
+                    inputs.forEach(input => {
+                        selecoes.push(input.value);
+                        precoAdicionais += parseFloat(input.dataset.preco || 0);
+                    });
+                });
+            }
+
+            if (!validacaoPassou) return;
+
+            const obs = document.getElementById('modal-obs').value;
+            const precoTotal = (produtoNoModal.preco + precoAdicionais) * quantidadeModal;
+
+            carrinho.push({
+                id: produtoNoModal.id,
+                nome: produtoNoModal.nome,
+                preco: precoTotal,
+                quantidade: quantidadeModal,
+                detalhes: selecoes,
+                observacao: obs
+            });
+
+            const contador = document.getElementById('contador-carrinho');
+            if (contador) contador.innerText = carrinho.length;
+            
+            fecharModal();
+        }
+
+        // --- LÓGICA DO CARRINHO ---
+        function abrirCarrinho() {
+            const lista = document.getElementById('lista-carrinho');
+            
+            if (carrinho.length === 0) {
+                lista.innerHTML = "<p class='text-center text-gray-500 mt-10 text-sm'>O carrinho está vazio.</p>";
+            } else {
+                lista.innerHTML = carrinho.map((item, i) => `
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 relative">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="font-bold text-dark pr-6 leading-tight text-sm">${item.quantidade}x ${item.nome}</p>
+                            <button onclick="removerDoCarrinho(${i})" class="text-gray-400 hover:text-red-600 absolute top-3 right-3 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                        ${item.detalhes.length > 0 ? `<p class="text-xs text-gray-600 mb-1">Opções: ${item.detalhes.join(', ')}</p>` : ''}
+                        ${item.observacao ? `<p class="text-xs text-gray-500 italic mb-2">Obs: ${item.observacao}</p>` : ''}
+                        <p class="text-sm font-bold text-primary mt-2">R$ ${item.preco.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                `).join('');
+                
+                lista.innerHTML += `
+                    <button onclick="limparCarrinho()" class="w-full mt-4 text-gray-400 text-xs font-bold uppercase tracking-wider hover:text-red-500 transition py-2 border border-gray-200 rounded-lg bg-white">
+                        Esvaziar Carrinho
+                    </button>
+                `;
+            }
+            document.getElementById('sidebar-carrinho').classList.remove('hidden');
+        }
+
+        function fecharCarrinho() {
+            document.getElementById('sidebar-carrinho').classList.add('hidden');
+        }
+
+        function removerDoCarrinho(index) {
+            carrinho.splice(index, 1);
+            document.getElementById('contador-carrinho').innerText = carrinho.length;
+            abrirCarrinho();
+        }
+
+        function limparCarrinho() {
+            if (confirm("Deseja remover todos os itens?")) {
+                carrinho = [];
+                document.getElementById('contador-carrinho').innerText = "0";
+                abrirCarrinho();
+            }
+        }
+
+        // Lógica de UI do Endereço
+        document.getElementById('tipo-entrega').addEventListener('change', function() {
+            const campoEndereco = document.getElementById('endereco');
+            if (this.value === 'Retirada') {
+                campoEndereco.disabled = true;
+                campoEndereco.value = "Retirada no Local Selecionada";
+                campoEndereco.style.backgroundColor = "#f3f4f6";
+                campoEndereco.style.cursor = "not-allowed";
+            } else {
+                campoEndereco.disabled = false;
+                campoEndereco.value = "";
+                campoEndereco.style.backgroundColor = "#ffffff";
+                campoEndereco.style.cursor = "text";
+            }
+        });
+
+        // Simulação de Checkout para Portfólio
+        function confirmarPedido() {
+            if (carrinho.length === 0) {
+                alert("O carrinho está vazio.");
+                return;
+            }
+            
+            const entrega = document.getElementById('tipo-entrega').value;
+            const end = document.getElementById('endereco').value;
+            const pag = document.getElementById('pagamento').value;
+            
+            if (entrega === 'Entrega' && end.trim() === '') {
+                alert("Preencha um endereço simulado.");
+                document.getElementById('endereco').focus();
+                return;
+            }
+            
+            // Monta o objeto (JSON) simulando um envio para API
+            const payloadPedido = {
+                status: "success",
+                metodo_entrega: entrega,
+                endereco: end,
+                metodo_pagamento: pag,
+                itens: carrinho,
+                subtotal: carrinho.reduce((acc, item) => acc + item.preco, 0),
+                data: new Date().toISOString()
+            };
+
+            // Simulação de resposta para o recrutador
+            console.log("=== PAYLOAD ENVIADO PARA O SERVIDOR ===");
+            console.log(JSON.stringify(payloadPedido, null, 2));
+            
+            alert("✅ CHECKOUT SIMULADO COM SUCESSO!\n\nAbra o Console do Navegador (F12) para ver o JSON do pedido gerado por esta transação.\n\n(O carrinho será limpo agora).");
+            
+            // Limpa após sucesso
+            carrinho = [];
+            document.getElementById('contador-carrinho').innerText = "0";
+            fecharCarrinho();
+        }
+
+        // Inicia
+        renderizarProdutos();
+    </script>
+</body>
+</html>
